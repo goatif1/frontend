@@ -1,12 +1,15 @@
-import AppBar from "@mui/material/AppBar";
 import PublicAppBar from "../components/appbar/PublicAppBar";
+import ColorPalette from "../../styles/colors_palette";
+import { Box } from "@mui/material";
+
 
 const PublicHomePage = (props) => {
 
     return (
-        <div className="App">
+        <Box>
             <PublicAppBar/>
-        </div>
+            <Box height="100vh" sx={{ bgcolor: ColorPalette.background }}></Box>
+        </Box>
     );
 }
 

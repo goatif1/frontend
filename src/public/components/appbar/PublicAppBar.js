@@ -1,21 +1,41 @@
 import {
     AppBar,
-    Box,
+    Button,
     Toolbar,
+    Typography,
 } from "@mui/material";
 import AppBarLogoButton from "../buttons/AppBarLogoButton";
 import ColorsPalette from "../../../styles/colors_palette";
+import { ThemeProvider, createTheme } from "@mui/material/styles"
+
+const theme = createTheme({
+    palette: {
+        login_button: {
+            main: ColorsPalette.background,
+            contrastText: '#fff',
+        }
+    }
+})
 
 
 const PublicAppBar = (props) => {
     return (
-        <Box sx={{flexGrow: 1}}>
-            <AppBar position="static" sx={{bgcolor: ColorsPalette.background_red}}>
-                <Toolbar>
-                    <AppBarLogoButton/>
-                </Toolbar>
-            </AppBar>
-        </Box>
+
+        <AppBar position="static" sx={{ bgcolor: ColorsPalette.background_red }}>
+            <Toolbar>
+                {/* LOGO */}
+                <AppBarLogoButton />
+                {/* TITLE */}
+                <Typography sx={{ml: "16px"}} variant="h8">
+                    Goatif1 League
+                </Typography>
+                
+                <ThemeProvider theme={theme}>
+                    <Button variant="outlined" color="login_button">Login</Button>
+                </ThemeProvider>
+            </Toolbar>
+        </AppBar>
+
     );
 }
 
