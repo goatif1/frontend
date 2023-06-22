@@ -1,22 +1,12 @@
 import {
     AppBar,
-    Button,
     Toolbar,
     Typography,
+    Box
 } from "@mui/material";
 import AppBarLogoButton from "../buttons/AppBarLogoButton";
 import ColorsPalette from "../../../styles/colors_palette";
-import { ThemeProvider, createTheme } from "@mui/material/styles"
-
-const theme = createTheme({
-    palette: {
-        login_button: {
-            main: ColorsPalette.background,
-            contrastText: '#fff',
-        }
-    }
-})
-
+import GenericButton from "../buttons/GenericButton";
 
 const PublicAppBar = (props) => {
     return (
@@ -29,10 +19,34 @@ const PublicAppBar = (props) => {
                 <Typography sx={{ml: "16px"}} variant="h8">
                     Goatif1 League
                 </Typography>
-                
-                <ThemeProvider theme={theme}>
-                    <Button variant="outlined" color="login_button">Login</Button>
-                </ThemeProvider>
+
+                {/* LOGIN and REGISTER buttons */}
+                <Box
+                    sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end'}}
+                >
+                    {/* LOGIN BUTTON */}
+                    <Box sx={{ marginLeft: '10px' }}>
+                        <GenericButton
+                            textColor="white"
+                            onClick={() => {
+                                console.log("LOGIN CLICKED!")
+                            }}
+                            text="Login"
+                        />
+                    </Box>
+
+                    {/* REGISTER BUTTON */}
+                    <Box sx={{ marginLeft: '10px' }}>
+                        <GenericButton
+                            textColor="white"
+                            onClick={() => {
+                                console.log("REGISTER CLICKED!")
+                            }}
+                            text="Register"
+                        />
+                    </Box>
+                </Box>
+
             </Toolbar>
         </AppBar>
 
