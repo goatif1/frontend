@@ -9,9 +9,9 @@ const PublicHomePage = (props) => {
     return (
         <Box>
             <PublicAppBar/>
-            <Box height="100vh" sx={{ bgcolor: ColorPalette.background }}>
+            {/* <Box height="100vh" sx={{ bgcolor: ColorPalette.background }}>
                 <NextWeekendSection/>
-            </Box>
+            </Box> */}
         </Box>
     );
 }
