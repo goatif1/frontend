@@ -1,9 +1,12 @@
+import { SnackbarProvider } from 'notistack';
 import './App.css';
 import PublicHomePage from './public/pages/PublicHomePage';
 
 function App() {
   return (
-    <PublicHomePage />
+    <SnackbarProvider>
+      <PublicHomePage />
+    </SnackbarProvider>
   );
 }
 
