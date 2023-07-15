@@ -21,7 +21,7 @@ const PublicAppBar = (props) => {
             let provider = null;
             if (window.ethereum) provider = window.ethereum;
             else if (window.web3) provider = window.web3.currentProvider;
-            else console.error("NOT METAMASK");
+            else enqueueSnackbar("Web3 Provider not found", {variant: 'error'});
 
             if (provider){
                 await provider.request({method: 'eth_requestAccounts'});
@@ -31,10 +31,8 @@ const PublicAppBar = (props) => {
                 const account = userAccount[0];
             }
 
-            enqueueSnackbar("LOG IN ERROR", {variant: 'error'});
-
         } catch (e) {
-            console.error("AN ERROR OCCURRED IN LOG IN: ", e);
+            enqueueSnackbar("Login error", {variant: 'error'});
         }
         
     }
