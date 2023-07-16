@@ -29,7 +29,10 @@ const PublicAppBar = (props) => {
                 const userAccount = await web3.eth.getAccounts();
                 console.log("USER ACCOUNT: ", userAccount);
                 const account = userAccount[0];
+                console.log("COINBASE: ", await web3.eth.getCoinbase())
             }
+
+            // LOGIN / SIGNUP PROCESS: https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial
 
         } catch (e) {
             enqueueSnackbar("Login error", {variant: 'error'});
