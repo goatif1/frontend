@@ -8,6 +8,7 @@ import AppBarLogoButton from "../buttons/AppBarLogoButton";
 import ColorsPalette from "../../../styles/colors_palette";
 import GenericButton from "../buttons/GenericButton";
 import { useSnackbar } from "notistack";
+import { getApiUrl, getData } from "../../../api/commons";
 
 const { Web3 } = require('web3');
 
@@ -27,9 +28,12 @@ const PublicAppBar = (props) => {
                 await provider.request({method: 'eth_requestAccounts'});
                 const web3 = new Web3(provider);
                 const userAccount = await web3.eth.getAccounts();
-                console.log("USER ACCOUNT: ", userAccount);
-                const account = userAccount[0];
-                console.log("COINBASE: ", await web3.eth.getCoinbase())
+                const account = userAccount[0].toLowerCase();
+
+                const url_nonce = getApiUrl() + `/users/${account}/nonce`;
+                let generatedNonce_Response = await getData(url_nonce);
+
+                console.log("GENERATED NONCE RESPONSE: ", generatedNonce_Response);
             }
 
             // LOGIN / SIGNUP PROCESS: https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial

@@ -1,5 +1,5 @@
 const WEB3_CONSTANTS = {
-    PROVIDER_URL: 'http://localhost:8545'
+    PROVIDER_URL: 'http://127.0.0.1:8545'
 };
 
 module.exports = WEB3_CONSTANTS;
