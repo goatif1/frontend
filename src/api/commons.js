@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { getCookie } from '../utils/cookies';
+import { getToken } from '../utils/access';
 
 const API_URL = `http://${process.env.REACT_APP_API_HOST}:3080`;
 
@@ -9,7 +9,7 @@ const getApiUrl = () => {
 
 const getAuthString = (tokenString) => {
     if (tokenString) return `Bearer ${tokenString}`;
-    return `Bearer ${getCookie('token')}`;
+    return `Bearer ${getToken('token')}`;
 }
 
 const getData = async (url, credentials = true, tokenString = null) => {
@@ -31,7 +31,22 @@ const getData = async (url, credentials = true, tokenString = null) => {
     }
 }
 
+const postData = async (url, data, credentials = true, tokenString = null) => {
+    try {
+        return axios.post(url, data, {
+            headers: {
+                Authorization: getAuthString(tokenString)
+            },
+            withCredentials: credentials
+        })
+    } catch (error) {
+        console.error(error);
+        return null;
+    }
+}
+
 export {
     getApiUrl,
-    getData
+    getData,
+    postData
 }

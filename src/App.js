@@ -1,12 +1,19 @@
 import { SnackbarProvider } from 'notistack';
 import './App.css';
-import PublicHomePage from './public/pages/PublicHomePage';
+import AppRoutes from './router/AppRoutes';
+import AccountContext from './public/contexts/AccountContext';
+import { useState } from 'react';
 
 function App() {
+  const [account, setAccount] = useState(null);
+  const value = { account, setAccount };
+
   return (
-    <SnackbarProvider>
-      <PublicHomePage />
-    </SnackbarProvider>
+    <AccountContext.Provider value={value} sx={{width: '100%', height: '100%'}}>
+      <SnackbarProvider>
+        <AppRoutes/>
+      </SnackbarProvider>
+    </AccountContext.Provider>
   );
 }
 

@@ -8,13 +8,18 @@ import AppBarLogoButton from "../buttons/AppBarLogoButton";
 import ColorsPalette from "../../../styles/colors_palette";
 import GenericButton from "../buttons/GenericButton";
 import { useSnackbar } from "notistack";
-import { getApiUrl, getData } from "../../../api/commons";
+import { getApiUrl, getData, postData } from "../../../api/commons";
+import { redirect, useNavigate } from "react-router-dom";
+import { useContext } from "react";
+import AccountContext from "../../contexts/AccountContext";
 
 const { Web3 } = require('web3');
 
 const PublicAppBar = (props) => {
 
     const { enqueueSnackbar } = useSnackbar();
+    const { account, setAccount } = useContext(AccountContext);
+    let navigate = useNavigate();
 
     const login = async () => {
         try {
@@ -31,17 +36,55 @@ const PublicAppBar = (props) => {
                 const account = userAccount[0].toLowerCase();
 
                 const url_nonce = getApiUrl() + `/users/${account}/nonce`;
-                let generatedNonce_Response = await getData(url_nonce);
+                let nonce_response = await getData(url_nonce);
 
-                console.log("GENERATED NONCE RESPONSE: ", generatedNonce_Response);
+                let nonce = nonce_response.data.data;
+                if (!nonce){
+                    enqueueSnackbar("Login error", {variant: 'error'});
+                    return;
+                }
+
+                // Signature
+                const userMessage = `GoatiF1 Sign to log in with one-time nonce: ${nonce}`;
+                const msg = `0x${stringToHex(userMessage)}`;
+                const sign = await provider.request({
+                    method: 'personal_sign',
+                    params: [msg, account]
+                });
+
+                let auth_response = await handleAuthenticate(account, sign);
+                console.log("AUTH RESPONSE: ", auth_response);
+                if (auth_response && auth_response.data){
+                    let token = auth_response.data.token;
+                    localStorage.setItem('goatif1_jwt', token);
+                    setAccount({
+                        public_address: account
+                    });
+                    console.log("NAVIGATE");
+                    navigate("/home");
+                }
+
             }
 
             // LOGIN / SIGNUP PROCESS: https://www.toptal.com/ethereum/one-click-login-flows-a-metamask-tutorial
 
         } catch (e) {
+            console.error(e)
             enqueueSnackbar("Login error", {variant: 'error'});
         }
         
+    }
+
+    const stringToHex = (str) => {
+        const encoder = new TextEncoder();
+        const data = encoder.encode(str);
+        return Array.prototype.map.call(data, byte => byte.toString(16).padStart(2, '0')).join('');
+    }
+
+    const handleAuthenticate = async (publicAddress, signature) => {
+        const url_auth = getApiUrl() + "/auth";
+        let auth_response = await postData(url_auth, {address: publicAddress, signature: signature});
+        return auth_response;
     }
 
     return (
@@ -59,6 +102,18 @@ const PublicAppBar = (props) => {
                 <Box
                     sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end'}}
                 >
+                    {/* Leagues BUTTON */}
+                    <Box sx={{ marginLeft: '10px' }}>
+                        <GenericButton
+                            textColor="white"
+                            onClick={() => {
+                                console.log("LEAGUES CLICKED!");
+                                navigate("/leagues")
+                            }}
+                            text="Leagues"
+                        />
+                    </Box>
+
                     {/* LOGIN BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
                         <GenericButton
