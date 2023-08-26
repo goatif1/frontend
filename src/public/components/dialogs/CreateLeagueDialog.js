@@ -1,10 +1,15 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Button } from "@mui/material";
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { getApiUrl, postData } from "../../../api/commons";
 import { getToken } from "../../../utils/access";
+import AccountContext from "../../contexts/AccountContext";
+import { useSnackbar } from "notistack";
 
 
 const CreateLeagueDialog = (props) => {
+
+    const { account, setAccount } = useContext(AccountContext);
+    const { enqueueSnackbar } = useSnackbar();
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
@@ -12,21 +17,23 @@ const CreateLeagueDialog = (props) => {
     let enableCreate = name != "" && description != "";
 
     const handleClose = () => {
+        setName("");
+        setDescription("");
         props.onClose();
     }
 
     const handleCreateLeague = async () => {
-        // todo
-        console.log("NAME: ", name);
-        console.log("DESCRIPTION: ", description);
-
         let url_create = getApiUrl() + "/organizations/";
         let create_result = await postData(url_create, {
-            address: "invented",
             name: name,
             description: description
-        }, true, getToken()); // todo: get address
-        handleClose();
+        }, true, getToken());
+        if (create_result && create_result.data && create_result.data.created){
+            enqueueSnackbar("League created successfully!", {variant: 'success'});
+            handleClose();
+        } else {
+            enqueueSnackbar("Error creating league", {variant: 'error'});
+        }
     }
     
     return (
