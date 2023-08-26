@@ -9,6 +9,7 @@ import { useContext, useEffect, useState } from "react";
 import AccountContext from "../../contexts/AccountContext";
 import { getApiUrl, getData } from "../../../api/commons";
 import { useSnackbar } from "notistack";
+import AllLeaguesList from "../../components/lists/AllLeaguesList";
 
 
 const LeaguesPage = (props) => {
@@ -19,7 +20,7 @@ const LeaguesPage = (props) => {
     
     // Leagues
     const [myLeagues, setMyLeagues] = useState(null);
-    const [all_leagues, setAllLeagues] = useState(null);
+    const [allLeagues, setAllLeagues] = useState(null);
     
     // Dialog
     const [createLeagueOpen, setCreateLegueOpen] = useState(false);
@@ -90,6 +91,9 @@ const LeaguesPage = (props) => {
             {myLeagues && myLeagues.length > 0 && <Box>
 
             </Box>}
+
+            <Typography variant="h8">Leagues</Typography>
+            {allLeagues && allLeagues.length > 0 && <AllLeaguesList leagues={allLeagues}/>}
 
             <CreateLeagueDialog
                 open={createLeagueOpen}
