@@ -6,16 +6,12 @@ import {
 } from "@mui/material";
 import AppBarLogoButton from "../buttons/AppBarLogoButton";
 import ColorsPalette from "../../../styles/colors_palette";
-import GenericButton from "../buttons/GenericButton";
-import { useSnackbar } from "notistack";
+import AppBarAccountButton from "../buttons/AppBarAccountButton";
 import { deleteToken } from "../../../utils/access";
-import { redirect, useNavigate } from "react-router-dom";
-
-const { Web3 } = require('web3');
+import { useNavigate } from "react-router-dom";
 
 const LoggedAppBar = (props) => {
 
-    const { enqueueSnackbar } = useSnackbar();
     let navigate = useNavigate();
 
     const logout = () => {
@@ -40,7 +36,7 @@ const LoggedAppBar = (props) => {
                 >
                     {/* Leagues BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
-                        <GenericButton
+                        <AppBarAccountButton
                             textColor="white"
                             onClick={() => {
                                 console.log("LEAGUES CLICKED!");
@@ -52,7 +48,7 @@ const LoggedAppBar = (props) => {
                     
                     {/* LOGOUT BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
-                        <GenericButton
+                        <AppBarAccountButton
                             textColor="white"
                             onClick={() => {
                                 console.log("logout CLICKED!");

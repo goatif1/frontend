@@ -6,10 +6,10 @@ import {
 } from "@mui/material";
 import AppBarLogoButton from "../buttons/AppBarLogoButton";
 import ColorsPalette from "../../../styles/colors_palette";
-import GenericButton from "../buttons/GenericButton";
+import AppBarAccountButton from "../buttons/AppBarAccountButton";
 import { useSnackbar } from "notistack";
 import { getApiUrl, getData, postData } from "../../../api/commons";
-import { redirect, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AccountContext from "../../contexts/AccountContext";
 
@@ -18,7 +18,7 @@ const { Web3 } = require('web3');
 const PublicAppBar = (props) => {
 
     const { enqueueSnackbar } = useSnackbar();
-    const { account, setAccount } = useContext(AccountContext);
+    const { setAccount } = useContext(AccountContext);
     let navigate = useNavigate();
 
     const login = async () => {
@@ -104,7 +104,7 @@ const PublicAppBar = (props) => {
                 >
                     {/* Leagues BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
-                        <GenericButton
+                        <AppBarAccountButton
                             textColor="white"
                             onClick={() => {
                                 console.log("LEAGUES CLICKED!");
@@ -116,7 +116,7 @@ const PublicAppBar = (props) => {
 
                     {/* LOGIN BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
-                        <GenericButton
+                        <AppBarAccountButton
                             textColor="white"
                             onClick={() => {
                                 console.log("LOGIN CLICKED!");
@@ -128,7 +128,7 @@ const PublicAppBar = (props) => {
 
                     {/* REGISTER BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
-                        <GenericButton
+                        <AppBarAccountButton
                             textColor="white"
                             onClick={() => {
                                 console.log("REGISTER CLICKED!")

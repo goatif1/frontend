@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemButton, ListItemText, Button, Divider } from "@mui/material";
+import { Box, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
 
 const AllLeaguesList = (props) => {
 

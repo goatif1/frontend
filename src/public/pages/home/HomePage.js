@@ -1,5 +1,3 @@
-import PublicAppBar from "../../components/appbar/PublicAppBar";
-import ColorPalette from "../../../styles/colors_palette";
 import { Box } from "@mui/material";
 import LoggedAppBar from "../../components/appbar/LoggedAppBar";
 

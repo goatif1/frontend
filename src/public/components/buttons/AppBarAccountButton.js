@@ -1,7 +1,7 @@
 import { Box, Typography } from "@mui/material";
 
 
-const GenericButton = (props) => {
+const AppBarAccountButton = (props) => {
     const textColor = props.textColor ?? 'white';
     const borderRadius = props.borderRadius ?? '4px';
     const padding = props.padding ?? '2px 8px';
@@ -23,11 +23,11 @@ const GenericButton = (props) => {
                 if (props.onClick) props.onClick();
             }}
         >
-            <Typography variant="button" sx={{ color: textColor }}>
+            <Typography sx={{ color: textColor }}>
                 {props.text}
             </Typography>
         </Box>
     );
 }
 
-export default GenericButton;
+export default AppBarAccountButton;

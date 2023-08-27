@@ -1,21 +1,20 @@
 import PublicAppBar from "../../components/appbar/PublicAppBar";
-import ColorPalette from "../../../styles/colors_palette";
-import { Box, Stack, Typography, Grid } from "@mui/material";
+import { Box, Typography, Grid } from "@mui/material";
 import LoggedAppBar from "../../components/appbar/LoggedAppBar";
 import { getToken, hasToken } from "../../../utils/access";
-import GenericButton from "../../components/buttons/GenericButton";
 import CreateLeagueDialog from "../../components/dialogs/CreateLeagueDialog";
-import { useContext, useEffect, useState } from "react";
-import AccountContext from "../../contexts/AccountContext";
+import { useEffect, useState } from "react";
 import { getApiUrl, getData } from "../../../api/commons";
 import { useSnackbar } from "notistack";
 import AllLeaguesList from "../../components/lists/AllLeaguesList";
+import PageTitle from "../../components/titles/PageTitle";
+import ColorPalette from "../../../styles/colors_palette";
+import GenericButton from "../../components/buttons/GenericButton";
 
 
 const LeaguesPage = (props) => {
 
     const user_is_logged = hasToken();
-    const { account, setAccount } = useContext(AccountContext);
     const { enqueueSnackbar } = useSnackbar();
     
     // Leagues
@@ -67,6 +66,7 @@ const LeaguesPage = (props) => {
     }
 
     useEffect(() => {
+
         getLeagues();
     }, [])
 
@@ -74,18 +74,18 @@ const LeaguesPage = (props) => {
         <Box sx={{ height: '100%', width: '100%'}}>
             {!user_is_logged ? <PublicAppBar/> : <LoggedAppBar/>}
 
-            <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 6}}>
+            <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 3}}>
                 <Grid item>
-                    <Typography variant="h6">Leagues</Typography>
+                    <PageTitle title="Leagues"/>
                 </Grid>
-                {user_is_logged && <Grid item>
+                {user_is_logged && <Grid item sx={{pr: 6}}>
                     <GenericButton
-                        textColor="white"
+                        textColor={ColorPalette.background_red}
                         onClick={() => {
-                            console.log("Create League CLICKED!");
                             handleCreateLeagueDialogOpen();
                         }}
                         text="Create League"
+                        bgColor={ColorPalette.white}
                     />
                 </Grid>}
             </Grid>

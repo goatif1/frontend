@@ -1,20 +1,18 @@
 import { Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle, TextField, Button } from "@mui/material";
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { getApiUrl, postData } from "../../../api/commons";
 import { getToken } from "../../../utils/access";
-import AccountContext from "../../contexts/AccountContext";
 import { useSnackbar } from "notistack";
 
 
 const CreateLeagueDialog = (props) => {
 
-    const { account, setAccount } = useContext(AccountContext);
     const { enqueueSnackbar } = useSnackbar();
 
     const [name, setName] = useState("");
     const [description, setDescription] = useState("");
 
-    let enableCreate = name != "" && description != "";
+    let enableCreate = name !== "" && description !== "";
 
     const handleClose = () => {
         setName("");
