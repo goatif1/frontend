@@ -72,7 +72,7 @@ const LeaguesPage = (props) => {
 
     return (
         <Box sx={{ height: '100%', width: '100%'}}>
-            {!user_is_logged ? <PublicAppBar/> : <LoggedAppBar/>}
+            {!user_is_logged ? <PublicAppBar actual_page="leagues"/> : <LoggedAppBar actual_page="leagues"/>}
 
             <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 3}}>
                 <Grid item>

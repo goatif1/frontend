@@ -9,10 +9,13 @@ import ColorsPalette from "../../../styles/colors_palette";
 import AppBarAccountButton from "../buttons/AppBarAccountButton";
 import { deleteToken } from "../../../utils/access";
 import { useNavigate } from "react-router-dom";
+import AppBarPageButton from "../buttons/AppBarPageButton";
 
 const LoggedAppBar = (props) => {
 
     let navigate = useNavigate();
+    let actual_page = props.actual_page ?? "";
+
 
     const logout = () => {
         deleteToken();
@@ -36,13 +39,12 @@ const LoggedAppBar = (props) => {
                 >
                     {/* Leagues BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
-                        <AppBarAccountButton
-                            textColor="white"
+                        <AppBarPageButton
                             onClick={() => {
-                                console.log("LEAGUES CLICKED!");
                                 navigate("/leagues")
                             }}
                             text="Leagues"
+                            selected={actual_page === "leagues"}
                         />
                     </Box>
                     

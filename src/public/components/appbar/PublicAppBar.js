@@ -12,6 +12,7 @@ import { getApiUrl, getData, postData } from "../../../api/commons";
 import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AccountContext from "../../contexts/AccountContext";
+import AppBarPageButton from "../buttons/AppBarPageButton";
 
 const { Web3 } = require('web3');
 
@@ -20,6 +21,8 @@ const PublicAppBar = (props) => {
     const { enqueueSnackbar } = useSnackbar();
     const { setAccount } = useContext(AccountContext);
     let navigate = useNavigate();
+
+    let actual_page = props.actual_page ?? "";
 
     const login = async () => {
         try {
@@ -104,13 +107,12 @@ const PublicAppBar = (props) => {
                 >
                     {/* Leagues BUTTON */}
                     <Box sx={{ marginLeft: '10px' }}>
-                        <AppBarAccountButton
-                            textColor="white"
+                        <AppBarPageButton
                             onClick={() => {
-                                console.log("LEAGUES CLICKED!");
                                 navigate("/leagues")
                             }}
                             text="Leagues"
+                            selected={actual_page === "leagues"}
                         />
                     </Box>
 
