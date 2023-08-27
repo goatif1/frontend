@@ -13,6 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AccountContext from "../../contexts/AccountContext";
 import AppBarPageButton from "../buttons/AppBarPageButton";
+import { hasToken } from "../../../utils/access";
 
 const { Web3 } = require('web3');
 
@@ -21,6 +22,7 @@ const PublicAppBar = (props) => {
     const { enqueueSnackbar } = useSnackbar();
     const { setAccount } = useContext(AccountContext);
     let navigate = useNavigate();
+    const user_is_logged = hasToken();
 
     let actual_page = props.actual_page ?? "";
 
@@ -97,9 +99,21 @@ const PublicAppBar = (props) => {
                 {/* LOGO */}
                 <AppBarLogoButton />
                 {/* TITLE */}
-                <Typography sx={{ml: "16px"}} variant="h8">
-                    GoatiF1
-                </Typography>
+                <Box 
+                    sx={{display: 'inline-block', cursor: 'pointer'}}
+                    onClick={() => {
+                        if (user_is_logged){
+                            navigate("/home");
+                        } else {
+                            navigate("/");
+                        }
+                    }}
+                >
+                    <Typography sx={{ml: "16px"}} variant="h8">
+                        GoatiF1
+                    </Typography>
+                </Box>
+                
 
                 {/* LOGIN and REGISTER buttons */}
                 <Box

@@ -10,6 +10,7 @@ import AllLeaguesList from "../../components/lists/AllLeaguesList";
 import PageTitle from "../../components/titles/PageTitle";
 import ColorPalette from "../../../styles/colors_palette";
 import GenericButton from "../../components/buttons/GenericButton";
+import SectionTitle from "../../components/titles/SectionTitle";
 
 
 const LeaguesPage = (props) => {
@@ -66,7 +67,6 @@ const LeaguesPage = (props) => {
     }
 
     useEffect(() => {
-
         getLeagues();
     }, [])
 
@@ -90,11 +90,9 @@ const LeaguesPage = (props) => {
                 </Grid>}
             </Grid>
 
-            {myLeagues && myLeagues.length > 0 && <Box>
+            {user_is_logged && myLeagues && myLeagues.length > 0 && <SectionTitle title="My Leagues"/>}
 
-            </Box>}
-
-            <Typography variant="h8">Leagues</Typography>
+            <SectionTitle title="Global Leagues"/>
             {allLeagues && allLeagues.length > 0 && <AllLeaguesList leagues={allLeagues}/>}
 
             <CreateLeagueDialog

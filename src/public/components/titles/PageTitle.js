@@ -4,7 +4,7 @@ import ColorPalette from "../../../styles/colors_palette";
 const PageTitle = (props) => {
 
     return (
-        <Typography sx={{ color: ColorPalette.background_red, pl: 6, fontWeight: 'bold', fontSize: 'h3.fontSize' }}>{props.title}</Typography>
+        <Typography sx={{ color: ColorPalette.background_red, pl: 6, pr: 6, fontWeight: 'bold', fontSize: 'h3.fontSize' }}>{props.title}</Typography>
     );
 }
 
