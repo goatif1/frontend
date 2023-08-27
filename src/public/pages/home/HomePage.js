@@ -6,12 +6,10 @@ import LoggedAppBar from "../../components/appbar/LoggedAppBar";
 
 const HomePage = (props) => {
 
-    console.log("HOME PAGE");
-
     return (
         <Box height="100vh">
             <LoggedAppBar/>
-            <Box sx={{ bgcolor: ColorPalette.background}}>
+            <Box>
                 <p>User is logged in</p>
             </Box>
         </Box>

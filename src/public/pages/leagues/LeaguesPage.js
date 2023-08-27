@@ -56,10 +56,12 @@ const LeaguesPage = (props) => {
         }
 
         if (my_leagues && my_leagues.length > 0){
+            my_leagues = my_leagues.sort((league_a, league_b) => league_a.name.localeCompare(league_b.name));
             setMyLeagues(my_leagues);
         }
 
         if (leagues && leagues.length > 0){
+            leagues = leagues.sort((league_a, league_b) => league_a.name.localeCompare(league_b.name));
             setAllLeagues(leagues);
         }
     }
@@ -69,7 +71,7 @@ const LeaguesPage = (props) => {
     }, [])
 
     return (
-        <Box sx={{ height: '100%', width: '100%', bgcolor: ColorPalette.background }}>
+        <Box sx={{ height: '100%', width: '100%'}}>
             {!user_is_logged ? <PublicAppBar/> : <LoggedAppBar/>}
 
             <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 6}}>
