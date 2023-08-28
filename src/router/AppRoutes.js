@@ -3,6 +3,7 @@ import PublicHomePage from '../public/pages/home/PublicHomePage';
 import HomePage from '../public/pages/home/HomePage';
 import { hasToken } from '../utils/access';
 import LeaguesPage from '../public/pages/leagues/LeaguesPage';
+import LeagueDetailPage from '../public/pages/leagues/LeagueDetailPage';
 
 const AppRoutes = (props) => {
     const can_access = (path) => {
@@ -17,6 +18,7 @@ const AppRoutes = (props) => {
                     can_access("/home") ? <HomePage/> : <Navigate to={{ pathname: "/"}} />
                 }/>
                 <Route path="/leagues" element= {<LeaguesPage/>}/>
+                <Route path="/leagues/:id_league" element={<LeagueDetailPage/>}/>
             </Routes>
         </BrowserRouter>
     );

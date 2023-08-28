@@ -2,7 +2,7 @@ import { Box, List, ListItem, ListItemButton, ListItemText } from "@mui/material
 import ColorPalette from "../../../styles/colors_palette";
 import { useNavigate } from "react-router-dom";
 
-const AllLeaguesList = (props) => {
+const MyLeaguesList = (props) => {
 
     let navigate = useNavigate();
     let leagues = props.leagues;
@@ -13,9 +13,11 @@ const AllLeaguesList = (props) => {
                 {leagues.map((league, index) => {
                     return (
                         <ListItem disablePadding sx={{backgroundColor: index % 2 != 0 ? ColorPalette.white : "white"}}>
-                            <ListItemButton onClick={() => {
+                            <ListItemButton
+                            onClick={(event) => {
                                 navigate(`/leagues/${league.id}`);
-                            }}>
+                            }}
+                            >
                                 <ListItemText primary={league.name} secondary={league.description}/>
                             </ListItemButton>
                         </ListItem>
@@ -26,4 +28,4 @@ const AllLeaguesList = (props) => {
     );
 }
 
-export default AllLeaguesList;
+export default MyLeaguesList;

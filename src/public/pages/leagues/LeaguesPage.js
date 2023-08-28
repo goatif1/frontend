@@ -11,6 +11,7 @@ import PageTitle from "../../components/titles/PageTitle";
 import ColorPalette from "../../../styles/colors_palette";
 import GenericButton from "../../components/buttons/GenericButton";
 import SectionTitle from "../../components/titles/SectionTitle";
+import MyLeaguesList from "../../components/lists/MyLeaguesList";
 
 
 const LeaguesPage = (props) => {
@@ -90,9 +91,14 @@ const LeaguesPage = (props) => {
                 </Grid>}
             </Grid>
 
-            {user_is_logged && myLeagues && myLeagues.length > 0 && <SectionTitle title="My Leagues"/>}
+            {user_is_logged && myLeagues && myLeagues.length > 0 && 
+                <SectionTitle title="Manage my leagues"/>
+            }
+            {user_is_logged && myLeagues && myLeagues.length > 0 && 
+               <MyLeaguesList leagues={myLeagues}/>
+            }
 
-            <SectionTitle title="Global Leagues"/>
+            <SectionTitle title="Global leagues"/>
             {allLeagues && allLeagues.length > 0 && <AllLeaguesList leagues={allLeagues}/>}
 
             <CreateLeagueDialog
