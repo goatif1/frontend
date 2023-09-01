@@ -13,7 +13,6 @@ import GenericButton from "../../components/buttons/GenericButton";
 import SectionTitle from "../../components/titles/SectionTitle";
 import MyLeaguesList from "../../components/lists/MyLeaguesList";
 
-
 const LeaguesPage = (props) => {
 
     const user_is_logged = hasToken();

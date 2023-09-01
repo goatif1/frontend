@@ -5,6 +5,7 @@ import { hasToken } from "../../../utils/access";
 import PublicAppBar from "../../components/appbar/PublicAppBar";
 import LoggedAppBar from "../../components/appbar/LoggedAppBar";
 import { useSnackbar } from "notistack";
+import { useParams } from "react-router-dom";
 
 const LeagueDetailPage = (props) => {
     const user_is_logged = hasToken();
@@ -12,8 +13,9 @@ const LeagueDetailPage = (props) => {
     
     // League
     const [league, setLeague] = useState(null);
-    // let url_params = window.location;
-    console.log("WINDOW LOCATION: ", window.location);
+    const params = useParams();
+
+    console.log("PARAMETERS: ", params);
 
     // const getLeague = async () => {
     //     let league = null;
