@@ -1,15 +1,11 @@
 FROM node:16
 
-WORKDIR /opt/goatifi/frontend
-
-COPY package*.json ./
-
-RUN npm install
-
-RUN npm install -g nodemon
+WORKDIR /opt/goatif1/frontend
 
 COPY . .
 
+RUN npm install
+
 EXPOSE 443
 
-CMD npm run start
+CMD [ "npm", "start" ]
