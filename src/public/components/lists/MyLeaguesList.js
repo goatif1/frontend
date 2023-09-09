@@ -12,7 +12,7 @@ const MyLeaguesList = (props) => {
             <List style={{maxHeight: 400, overflow: "auto"}}>
                 {leagues.map((league, index) => {
                     return (
-                        <ListItem disablePadding sx={{backgroundColor: index % 2 != 0 ? ColorPalette.white : "white"}}>
+                        <ListItem disablePadding>
                             <ListItemButton
                             onClick={(event) => {
                                 navigate(`/leagues/${league.id}`);

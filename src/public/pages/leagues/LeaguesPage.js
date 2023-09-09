@@ -1,5 +1,5 @@
 import PublicAppBar from "../../components/appbar/PublicAppBar";
-import { Box, Typography, Grid } from "@mui/material";
+import { Box, Grid } from "@mui/material";
 import LoggedAppBar from "../../components/appbar/LoggedAppBar";
 import { getToken, hasToken } from "../../../utils/access";
 import CreateLeagueDialog from "../../components/dialogs/CreateLeagueDialog";
@@ -39,7 +39,6 @@ const LeaguesPage = (props) => {
         let url = getApiUrl() + "/organizations/";
         let leagues_result = await getData(url, false, getToken());
         if (leagues_result && leagues_result.data) {
-            console.log("LEAGUES: ", leagues_result.data);
             leagues = leagues_result.data;
         } else {
             enqueueSnackbar("Error getting leagues.", {variant: "error"});

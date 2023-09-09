@@ -10,6 +10,7 @@ import PageTitle from "../../components/titles/PageTitle";
 import GenericButton from "../../components/buttons/GenericButton";
 import ColorPalette from "../../../styles/colors_palette";
 import AccountContext from "../../contexts/AccountContext";
+import CreateChampionshipDialog from "../../components/dialogs/CreateChampionshipDialog";
 
 const LeagueDetailPage = (props) => {
     const user_is_logged = hasToken();
@@ -22,11 +23,14 @@ const LeagueDetailPage = (props) => {
     const [isLeagueAdmin, setIsLeagueAdmin] = useState(false);
     const params = useParams();
 
+    // Create
+    const [createChamiponship, setCreateChampionship] = useState(false);
+
     const getLeague = async () => {
         let url = getApiUrl() + "/organizations/" + params.id_league;
         let league_res = await getData(url, false, getToken());
         if (league_res && league_res.data) {
-            console.log("LEAGUE: ", league_res.data);
+            console.log("ACCOUNT: ", account);
             if (user_is_logged && account && account.public_address){
                 setIsLeagueAdmin(league_res.data.admin == account.public_address);
             }
@@ -40,8 +44,7 @@ const LeagueDetailPage = (props) => {
         let url = getApiUrl() + "/organizations/" + params.id_league + "/championships";
         let championships_res = await getData(url, false, getToken());
         if (championships_res && championships_res.data) {
-            console.log("CHAMPIONSHIPS: ", championships_res.data);
-            setLeague(championships_res.data);
+            setChampionships(championships_res.data);
         } else {
             enqueueSnackbar("Error getting championships.", {variant: "error"});
         }
@@ -51,10 +54,6 @@ const LeagueDetailPage = (props) => {
         getLeague();
         getChampionships();
     }, []);
-
-    useEffect(() => {
-        console.log("ACCOUNT USE EFFECT: ", account.public_address);
-    }, [account])
 
     return (
         <Box sx={{ height: '100%', width: '100%'}}>
@@ -68,14 +67,21 @@ const LeagueDetailPage = (props) => {
                     <GenericButton
                         textColor={ColorPalette.background_red}
                         onClick={() => {
-                            // handleCreateLeagueDialogOpen();
-                            console.log("CREATE CLICKED");
+                            setCreateChampionship(true);
                         }}
                         text="Create Championship"
                         bgColor={ColorPalette.white}
                     />
                 </Grid>}
             </Grid>}
+
+            <CreateChampionshipDialog
+                onClose={() => {
+                    setCreateChampionship(false);
+                    getChampionships();
+                }}
+                open={createChamiponship}
+            />
             
         </Box>
     );
