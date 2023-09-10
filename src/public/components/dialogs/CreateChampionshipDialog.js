@@ -113,14 +113,30 @@ const CreateChampionshipDialog = (props) => {
 
     // Create championship
     const handleCreateChampionship = async () => {
-        let url_create = getApiUrl() + "/championships/";
-        console.log("DATA TO SEND: ", {
-            name: name,
-            description: description,
-            adminIsDriver: adminIsDriver,
-            invitationCodes: invitationCodes,
-            teams: teams
-        })
+        try {
+            let url_create = getApiUrl() + "/organizations/" + params.id_league + "/championships";
+            let data = {
+                name: name,
+                description: description,
+                adminIsDriver: adminIsDriver,
+                invitationCodes: invitationCodes,
+                teams: teams
+            };
+            console.log("DATA TO SEND: ", data);
+    
+            let create_res = await postData(url_create, data, true, getToken());
+
+            if (create_res && create_res.data && create_res.data.status && create_res.data.status == "Success"){
+                enqueueSnackbar("League created successfully!", {variant: "success"});
+            }else{
+                enqueueSnackbar("Error creating the league. Please, try again.", {variant: "error"});
+            }
+
+        } catch(e){
+            enqueueSnackbar("Error creating the league. Please, try again.", {variant: "error"});
+        }
+
+
         // let create_result = await postData(url_create, {
         //     name: name,
         //     description: description,
