@@ -8,7 +8,7 @@ const AllLeaguesList = (props) => {
     let leagues = props.leagues;
 
     return (
-        <Box sx={{mt: 2, ml: 6, mb: 4, mr: 6, border: `2px solid ${ColorPalette.white}`, borderRadius: '16px'}}>
+        <Box sx={{mt: 2, ml: 6, mb: 4, mr: 6, border: `1px solid ${ColorPalette.background_red}`, borderRadius: '16px'}}>
             <List style={{maxHeight: 400, overflow: "auto"}}>
                 {leagues.map((league, index) => {
                     return (

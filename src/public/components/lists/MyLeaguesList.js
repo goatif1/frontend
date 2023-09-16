@@ -1,4 +1,4 @@
-import { Box, List, ListItem, ListItemButton, ListItemText } from "@mui/material";
+import { Box, ButtonBase, List, ListItem, ListItemButton, ListItemText, Typography } from "@mui/material";
 import ColorPalette from "../../../styles/colors_palette";
 import { useNavigate } from "react-router-dom";
 
@@ -8,20 +8,35 @@ const MyLeaguesList = (props) => {
     let leagues = props.leagues;
 
     return (
-        <Box sx={{mt: 2, ml: 6, mb: 4, mr: 6, border: `2px solid ${ColorPalette.white}`, borderRadius: '16px'}}>
-            <List style={{maxHeight: 400, overflow: "auto"}}>
+        <Box sx={{mt: 2, ml: 6, mb: 4, mr: 6 }} >
+            <List style={{display: "flex", flexDirection: "row", overflowX: "auto"}}>
                 {leagues.map((league, index) => {
-                    return (
-                        <ListItem disablePadding>
-                            <ListItemButton
-                            onClick={(event) => {
-                                navigate(`/leagues/${league.id}`);
-                            }}
-                            >
-                                <ListItemText primary={league.name} secondary={league.description}/>
-                            </ListItemButton>
-                        </ListItem>
-                    );
+                    return (<ButtonBase
+                        sx={{
+                            borderRadius: '16px',
+                            ml: index == 0 ? 0 : 4,
+                        }}
+                        onClick={(event) => {
+                            navigate(`/leagues/${league.id}`);
+                        }}
+                        >
+                            <Box sx={{
+                                border: 0.5, 
+                                borderRadius: '16px', 
+                                px: 2, 
+                                py: 3, 
+                                width: 180,
+                                height: 45,
+                                borderColor: ColorPalette.background_red
+                            }}>
+                                <Typography sx={{fontWeight: 'bold', fontSize: 16}}>
+                                    {league.name}
+                                </Typography>
+                                <Typography sx={{fontWeight: 'light', fontSize: 12}}>
+                                    {league.description}
+                                </Typography>
+                            </Box>
+                    </ButtonBase>);
                 })}
             </List>
         </Box>
