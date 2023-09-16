@@ -1,6 +1,6 @@
 import { useState, useEffect, useContext } from "react";
 import { getApiUrl, getData } from "../../../api/commons";
-import { Box, Grid } from "@mui/material";
+import { Box, Grid, Typography } from "@mui/material";
 import { getToken, hasToken } from "../../../utils/access";
 import PublicAppBar from "../../components/appbar/PublicAppBar";
 import LoggedAppBar from "../../components/appbar/LoggedAppBar";
@@ -11,6 +11,7 @@ import GenericButton from "../../components/buttons/GenericButton";
 import ColorPalette from "../../../styles/colors_palette";
 import AccountContext from "../../contexts/AccountContext";
 import CreateChampionshipDialog from "../../components/dialogs/CreateChampionshipDialog";
+import ChampionshipsList from "../../components/lists/ChampionshipsList";
 
 const LeagueDetailPage = (props) => {
     const user_is_logged = hasToken();
@@ -74,6 +75,21 @@ const LeagueDetailPage = (props) => {
                     />
                 </Grid>}
             </Grid>}
+
+            {league && (
+                <Box sx={{
+                    mx: 6
+                }}>
+                    {/* DESCRIPTION */}
+                    <Typography>
+                        {league.description}
+                    </Typography>
+
+                    {championships && <ChampionshipsList championships={championships}/>}
+
+
+                </Box>
+            )}
 
             <CreateChampionshipDialog
                 onClose={() => {
