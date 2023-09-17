@@ -4,6 +4,7 @@ import HomePage from '../public/pages/home/HomePage';
 import { hasToken } from '../utils/access';
 import LeaguesPage from '../public/pages/leagues/LeaguesPage';
 import LeagueDetailPage from '../public/pages/leagues/LeagueDetailPage';
+import ChampionshipDetailPage from '../public/pages/championships/ChampionshipDetailPage';
 
 const AppRoutes = (props) => {
     const can_access = (path) => {
@@ -19,6 +20,7 @@ const AppRoutes = (props) => {
                 }/>
                 <Route path="/leagues" element= {<LeaguesPage/>}/>
                 <Route path="/leagues/:id_league" element={<LeagueDetailPage/>}/>
+                <Route path="/championships/:id_championship" element={<ChampionshipDetailPage/>}/>
             </Routes>
         </BrowserRouter>
     );

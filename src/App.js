@@ -3,6 +3,8 @@ import './App.css';
 import AppRoutes from './router/AppRoutes';
 import AccountContext from './public/contexts/AccountContext';
 import { useState } from 'react';
+import { ThemeProvider } from '@mui/styles';
+import GlobalTheme from './styles/GlobalTheme';
 
 function App() {
   const [account, setAccount] = useState(null);
@@ -11,7 +13,9 @@ function App() {
   return (
     <AccountContext.Provider value={value} sx={{width: '100%', height: '100%'}}>
       <SnackbarProvider>
-        <AppRoutes/>
+        <ThemeProvider theme={GlobalTheme}>
+          <AppRoutes/>
+        </ThemeProvider>
       </SnackbarProvider>
     </AccountContext.Provider>
   );

@@ -16,3 +16,22 @@ export function deleteToken(){
     localStorage.removeItem('goatif1_jwt');
   }
 }
+
+export function storeAccount(account) {
+  return localStorage.setItem('account', account);
+}
+
+export function getAccount () {
+  return localStorage.getItem('account');
+}
+
+export function hasAccount () {
+  if (getAccount()) return true;
+  return false;
+}
+
+export function deleteAccount () {
+  if (hasAccount()){
+    localStorage.removeItem('account');
+  }
+}

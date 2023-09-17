@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { getApiUrl, getData } from "../../../api/commons";
 import { Box, Grid, Typography } from "@mui/material";
-import { getToken, hasToken } from "../../../utils/access";
+import { getAccount, getToken, hasToken } from "../../../utils/access";
 import PublicAppBar from "../../components/appbar/PublicAppBar";
 import LoggedAppBar from "../../components/appbar/LoggedAppBar";
 import { useSnackbar } from "notistack";
@@ -15,7 +15,8 @@ import ChampionshipsList from "../../components/lists/ChampionshipsList";
 
 const LeagueDetailPage = (props) => {
     const user_is_logged = hasToken();
-    const {account} = useContext(AccountContext);
+    const account = getAccount();
+    console.log("ACCOUNT: ", account);
     const { enqueueSnackbar } = useSnackbar();
     
     // League
@@ -32,8 +33,8 @@ const LeagueDetailPage = (props) => {
         let league_res = await getData(url, false, getToken());
         if (league_res && league_res.data) {
             console.log("ACCOUNT: ", account);
-            if (user_is_logged && account && account.public_address){
-                setIsLeagueAdmin(league_res.data.admin == account.public_address);
+            if (user_is_logged && account){
+                setIsLeagueAdmin(league_res.data.admin == account);
             }
             setLeague(league_res.data);
         } else {

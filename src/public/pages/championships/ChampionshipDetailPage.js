@@ -1,7 +1,7 @@
 import { useState, useEffect, useContext } from "react";
 import { getApiUrl, getData } from "../../../api/commons";
-import { Box, Grid, Typography } from "@mui/material";
-import { getToken, hasToken } from "../../../utils/access";
+import { Box, Grid, Tab, Tabs, Typography } from "@mui/material";
+import { getAccount, getToken, hasToken } from "../../../utils/access";
 import PublicAppBar from "../../components/appbar/PublicAppBar";
 import LoggedAppBar from "../../components/appbar/LoggedAppBar";
 import { useSnackbar } from "notistack";
@@ -12,28 +12,40 @@ import ColorPalette from "../../../styles/colors_palette";
 import AccountContext from "../../contexts/AccountContext";
 import CreateChampionshipDialog from "../../components/dialogs/CreateChampionshipDialog";
 import ChampionshipsList from "../../components/lists/ChampionshipsList";
+import DriversStanding from "../../components/lists/DriversStanding";
+import TeamsStanding from "../../components/lists/TeamsStanding";
 
 const ChampionshipDetailPage = (props) => {
     const user_is_logged = hasToken();
-    const {account} = useContext(AccountContext);
+    const account = getAccount();
     const { enqueueSnackbar } = useSnackbar();
     
     // League
     const [league, setLeague] = useState(null);
-    // Championship
-    const [championship, setChampionship] = useState(null);
-    const [championshipDriversStanding, setChampionshipDriversStandings] = useState(null);
-    const [championshipTeamsStanding, setChampionshipTeamsStandings] = useState(null);
     const [isLeagueAdmin, setIsLeagueAdmin] = useState(false);
     const params = useParams();
+    // Championship
+    const [championship, setChampionship] = useState(null);
+
+    // Tab 0 - News
+    const [news, setNews] = useState([]);
+    // Tab 1 - Drivers
+    const [drivers, setDrivers] = useState([]);
+    // Tab 2 - Teams
+    const [teams, setTeams] = useState([]);
+    const [teamsWithDrivers, setTeamsWithDrivers] = useState([]);
+    // Tab 3 - Races
+    const [races, setRaces] = useState([]);
+
+    // Tabs
+    const [tab, setTab] = useState(0);
 
     const getLeague = async () => {
-        let url = getApiUrl() + "/organizations/" + params.id_league;
+        let url = getApiUrl() + "/organizations/" + championship.id_organization;
         let league_res = await getData(url, false, getToken());
         if (league_res && league_res.data) {
-            console.log("ACCOUNT: ", account);
-            if (user_is_logged && account && account.public_address){
-                setIsLeagueAdmin(league_res.data.admin == account.public_address);
+            if (user_is_logged && account){
+                setIsLeagueAdmin(league_res.data.admin == account);
             }
             setLeague(league_res.data);
         } else {
@@ -52,36 +64,64 @@ const ChampionshipDetailPage = (props) => {
     }
 
     const getChampionshipDriversStanding = async () => {
-        let url = getApiUrl() + "/championships/" + params.id_championship + "/driver_standing";
+        let url = getApiUrl() + "/championships/" + params.id_championship + "/drivers_standing";
         let drivers_standings_res = await getData(url, false, getToken());
         if (drivers_standings_res && drivers_standings_res.data) {
-            setChampionshipDriversStandings(drivers_standings_res.data);
+            setDrivers(drivers_standings_res.data);
         } else {
             enqueueSnackbar("Error getting championship drivers standings.", {variant: "error"});
         }
     }
 
     const getChampionshipTeamsStanding = async () => {
-        let url = getApiUrl() + "/championships/" + params.id_championship + "/team_standing";
+        let url = getApiUrl() + "/championships/" + params.id_championship + "/teams_standing";
         let teams_standings_res = await getData(url, false, getToken());
         if (teams_standings_res && teams_standings_res.data) {
-            setChampionshipTeamsStandings(teams_standings_res.data);
+            setTeams(teams_standings_res.data);
         } else {
             enqueueSnackbar("Error getting championship teams standings.", {variant: "error"});
         }
     }
 
     useEffect(() => {
-        getLeague();
         getChampionship();
+        getChampionshipDriversStanding();
+        getChampionshipTeamsStanding();
     }, []);
 
     useEffect(() => {
-        if (league && championship){
-            getChampionshipDriversStanding();
-            getChampionshipTeamsStanding();
+        if (championship){
+            getLeague();
         }
-    }, [league, championship])
+    }, [championship]);
+
+    useEffect(() => {
+        if (drivers && teams){
+            console.log("drivers and teams: ", teams);
+            let new_teams = teams;
+            new_teams.map((team) => {
+                let driver = drivers.find(driver => driver.address_driver == team.address_driver_1);
+                if (driver){
+                    team.nickname_driver_1 = driver.nickname;
+                    team.points_driver_1 = driver.total_points;
+                } else {
+                    team.nickname_driver_1 = "Unknown";
+                    team.points_driver_1 = 0;
+                }
+
+                driver = drivers.find(driver => driver.address_driver == team.address_driver_2);
+                if (driver){
+                    team.nickname_driver_2 = driver.nickname;
+                    team.points_driver_2 = driver.total_points;
+                } else {
+                    team.nickname_driver_2 = "Unknown";
+                    team.points_driver_2 = 0;
+                }
+            });
+
+            setTeamsWithDrivers(new_teams);
+        }
+    }, [drivers, teams]);
 
     return (
         <Box sx={{ height: '100%', width: '100%'}}>
@@ -89,42 +129,95 @@ const ChampionshipDetailPage = (props) => {
 
             {league && <Grid container alignItems="center" justifyContent="space-between" sx={{ mt: 3}}>
                 <Grid item>
-                    <PageTitle title={league.name}/>
+                    <PageTitle title={championship.name}/>
                 </Grid>
                 {isLeagueAdmin && <Grid item sx={{pr: 6}}>
                     <GenericButton
                         textColor={ColorPalette.background_red}
                         onClick={() => {
-                            setCreateChampionship(true);
+                            console.log("EDIT")
                         }}
-                        text="Create Championship"
+                        text="Manage"
                         bgColor={ColorPalette.white}
                     />
                 </Grid>}
             </Grid>}
 
-            {league && (
+            {championship && (
                 <Box sx={{
                     mx: 6
                 }}>
                     {/* DESCRIPTION */}
                     <Typography>
-                        {league.description}
+                        {championship.description}
                     </Typography>
 
-                    {championships && <ChampionshipsList championships={championships}/>}
+                    {/* TABS */}
+                    <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                        <Tabs 
+                            value={tab} 
+                            onChange={(e, new_tab) => {
+                                setTab(new_tab);
+                            }} 
+                            aria-label="basic tabs example"
+                        >
+                            <Tab label="News" />
+                            <Tab label="Drivers" />
+                            <Tab label="Teams" />
+                            <Tab label="Races" disabled/>
+                        </Tabs>
+                    </Box>
 
+                    <Box sx={{mt: 2.5}}>
+                        {/* TAB NEWS */}
+                        {tab == 0 && news && news.length > 0 && (
+                            <Box>
+                                <Typography>Here will go the news</Typography>
+                            </Box>
+                        )}
+
+                        {tab == 0 && (!news || news.length == 0) && (
+                            <Box>
+                                <Typography>There aren't news to read.</Typography>
+                            </Box>
+                        )}
+
+
+                        {/* TAB DRIVERS */}
+                        {tab == 1 && drivers && drivers.length > 0 && (
+                            <Box>
+                                <DriversStanding
+                                    drivers={drivers}
+                                />
+                            </Box>
+                        )}
+
+                        {tab == 1 && (!drivers || drivers.length == 0) && (
+                            <Box>
+                                <Typography>There aren't drivers yet.</Typography>
+                            </Box>
+                        )}
+
+                        {/* TAB TEAMS */}
+                        {tab == 2 && teamsWithDrivers && teamsWithDrivers.length > 0 && (
+                            <Box>
+                                <TeamsStanding
+                                    teams={teamsWithDrivers}
+                                />
+                            </Box>
+                        )}
+
+                        {tab == 2 && (!teamsWithDrivers || teamsWithDrivers.length == 0) && (
+                            <Box>
+                                <Typography>There aren't teams yet.</Typography>
+                            </Box>
+                        )}
+                    </Box>
 
                 </Box>
             )}
 
-            <CreateChampionshipDialog
-                onClose={() => {
-                    setCreateChampionship(false);
-                    getChampionship();
-                }}
-                open={createChamiponship}
-            />
+            {/* DIALOGS */}
             
         </Box>
     );

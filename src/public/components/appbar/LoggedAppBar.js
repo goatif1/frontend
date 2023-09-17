@@ -7,7 +7,7 @@ import {
 import AppBarLogoButton from "../buttons/AppBarLogoButton";
 import ColorsPalette from "../../../styles/colors_palette";
 import AppBarAccountButton from "../buttons/AppBarAccountButton";
-import { deleteToken, hasToken } from "../../../utils/access";
+import { deleteAccount, deleteToken, hasToken } from "../../../utils/access";
 import { useNavigate } from "react-router-dom";
 import AppBarPageButton from "../buttons/AppBarPageButton";
 
@@ -19,6 +19,7 @@ const LoggedAppBar = (props) => {
 
     const logout = () => {
         deleteToken();
+        deleteAccount();
         navigate("/");
     }
 
@@ -44,7 +45,6 @@ const LoggedAppBar = (props) => {
                     </Typography>
                 </Box>
 
-                {/* LOGOUT button */}
                 <Box
                     sx={{ flexGrow: 1, display: 'flex', justifyContent: 'flex-end'}}
                 >

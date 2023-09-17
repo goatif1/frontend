@@ -13,7 +13,7 @@ import { useNavigate } from "react-router-dom";
 import { useContext } from "react";
 import AccountContext from "../../contexts/AccountContext";
 import AppBarPageButton from "../buttons/AppBarPageButton";
-import { hasToken } from "../../../utils/access";
+import { hasToken, setToken, storeAccount } from "../../../utils/access";
 
 const { Web3 } = require('web3');
 
@@ -58,14 +58,13 @@ const PublicAppBar = (props) => {
                 });
 
                 let auth_response = await handleAuthenticate(account, sign);
-                console.log("AUTH RESPONSE: ", auth_response);
                 if (auth_response && auth_response.data){
                     let token = auth_response.data.token;
-                    localStorage.setItem('goatif1_jwt', token);
+                    setToken(token);
                     setAccount({
                         public_address: account
                     });
-                    console.log("NAVIGATE");
+                    storeAccount(account);
                     navigate("/home");
                 }
 
