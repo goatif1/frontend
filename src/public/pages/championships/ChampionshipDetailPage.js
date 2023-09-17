@@ -159,7 +159,7 @@ const ChampionshipDetailPage = (props) => {
                             onChange={(e, new_tab) => {
                                 setTab(new_tab);
                             }} 
-                            aria-label="basic tabs example"
+                            aria-label="championship-tabs"
                         >
                             <Tab label="News" />
                             <Tab label="Drivers" />
