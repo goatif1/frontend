@@ -167,9 +167,14 @@ const CreateChampionshipDialog = (props) => {
     }
     
     return (
-        <Dialog open={props.open} onClose={handleClose}>
+        <Dialog 
+            open={props.open} 
+            onClose={handleClose}
+            fullWidth={true}
+            maxWidth="md"
+        >
             <DialogTitle>Create Championship</DialogTitle>
-            <DialogContent>
+            <DialogContent sx={{height: 600}}>
                 
                 <Stepper activeStep={step} alternativeLabel>
                     {steps.map((label) => (
