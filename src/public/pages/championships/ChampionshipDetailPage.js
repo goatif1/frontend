@@ -14,6 +14,7 @@ import CreateChampionshipDialog from "../../components/dialogs/CreateChampionshi
 import ChampionshipsList from "../../components/lists/ChampionshipsList";
 import DriversStanding from "../../components/lists/DriversStanding";
 import TeamsStanding from "../../components/lists/TeamsStanding";
+import RacesList from "../../components/lists/RacesList";
 
 const ChampionshipDetailPage = (props) => {
     const user_is_logged = hasToken();
@@ -83,10 +84,21 @@ const ChampionshipDetailPage = (props) => {
         }
     }
 
+    const getChampionshipRaces = async () => {
+        let url = getApiUrl() + "/championships/" + params.id_championship + "/races";
+        let races_res = await getData(url, false, getToken());
+        if (races_res && races_res.data){
+            setRaces(races_res.data);
+        } else {
+            enqueueSnackbar("Error getting championship races.", {variant: "error"});
+        }
+    }
+
     useEffect(() => {
         getChampionship();
         getChampionshipDriversStanding();
         getChampionshipTeamsStanding();
+        getChampionshipRaces();
     }, []);
 
     useEffect(() => {
@@ -164,7 +176,7 @@ const ChampionshipDetailPage = (props) => {
                             <Tab label="News" />
                             <Tab label="Drivers" />
                             <Tab label="Teams" />
-                            <Tab label="Races" disabled/>
+                            <Tab label="Races"/>
                         </Tabs>
                     </Box>
 
@@ -210,6 +222,15 @@ const ChampionshipDetailPage = (props) => {
                         {tab == 2 && (!teamsWithDrivers || teamsWithDrivers.length == 0) && (
                             <Box>
                                 <Typography>There aren't teams yet.</Typography>
+                            </Box>
+                        )}
+
+                        {/* TAB RACES */}
+                        {tab == 3 && races && races.length > 0 && (
+                            <Box>
+                                <RacesList
+                                    races={races}
+                                />
                             </Box>
                         )}
                     </Box>

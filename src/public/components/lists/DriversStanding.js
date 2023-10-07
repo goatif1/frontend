@@ -53,17 +53,17 @@ const DriversStanding = (props) => {
                                 </TableCell>
                                 
                                 {/* Address */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     {driver.address_driver}
                                 </TableCell>
 
                                 {/* Nickname */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     {driver.nickname}
                                 </TableCell>
 
                                 {/* Total Points */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     {driver.total_points}
                                 </TableCell>
 
