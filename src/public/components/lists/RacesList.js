@@ -1,12 +1,17 @@
-import { Button, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
+import { Avatar, Button, ButtonBase, Chip, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow } from "@mui/material";
 import { useEffect, useState } from "react"
 import RaceResultsDialog from "../dialogs/RaceResultsDialog";
+import RouletteIcon from "../../../images/roulette.png";
+import RouletteDialog from "../dialogs/RouletteDialog";
 
 const RacesList = (props) => {
 
+    const [admin, setAdmin] = useState(props.admin);
     const [races, setRaces] = useState();
+
     const [selectedRace, setSelectedRace] = useState(null);
     const [seeResults, setSeeResults] = useState(false);
+    const [seeRoulette, setSeeRoulette] = useState(false);
 
     const columns = [
         {
@@ -29,6 +34,9 @@ const RacesList = (props) => {
         },
         {
             name: "Race date"
+        },
+        {
+            name: "Roulette"
         },
         {
             name: "Results"
@@ -83,7 +91,7 @@ const RacesList = (props) => {
                                 </TableCell>
 
                                 <TableCell>
-                                    {race.name}
+                                    <b>{race.name}</b>
                                 </TableCell>
 
                                 <TableCell>
@@ -111,6 +119,19 @@ const RacesList = (props) => {
                                 </TableCell>
 
                                 <TableCell>
+                                    <ButtonBase
+                                        onClick={() => {
+                                            setSelectedRace(race);
+                                            setSeeRoulette(true);
+                                        }}
+                                    >
+                                        <Avatar
+                                            src={RouletteIcon}
+                                        />
+                                    </ButtonBase>
+                                </TableCell>
+
+                                <TableCell>
                                     <Button
                                         disabled={!race.race_finished}
                                         variant="outlined"
@@ -131,9 +152,22 @@ const RacesList = (props) => {
             {seeResults && selectedRace && (
                 <RaceResultsDialog
                     race={selectedRace}
+                    admin={admin}
                     onClose={() => {
                         setSelectedRace(null);
                         setSeeResults(false);
+                    }}
+                />
+            )}
+
+            {seeRoulette && selectedRace && (
+                <RouletteDialog
+                    race={selectedRace}
+                    admin={admin}
+                    open={seeRoulette && selectedRace}
+                    onClose={() => {
+                        setSelectedRace(null);
+                        setSeeRoulette(false);
                     }}
                 />
             )}

@@ -4,6 +4,8 @@ import { useState } from "react";
 const TeamsStanding = (props) => {
 
     const [teams, setTeams] = useState(props.teams);
+    const [admin, setAdmin] = useState(props.admin);
+
     const columns = [
         {
             name: "Position",
@@ -67,12 +69,12 @@ const TeamsStanding = (props) => {
                                 
                                 {/* Name */}
                                 <TableCell align={columns[index].align}>
-                                    {team.name}
+                                    <b>{team.name}</b>
                                 </TableCell>
 
                                 {/* Total Points */}
                                 <TableCell align={columns[index].align}>
-                                    {team.total_points}
+                                    <b>{team.total_points}</b>
                                 </TableCell>
 
                                 {/* Driver 1 */}

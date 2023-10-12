@@ -200,6 +200,7 @@ const ChampionshipDetailPage = (props) => {
                             <Box>
                                 <DriversStanding
                                     drivers={drivers}
+                                    admin={isLeagueAdmin}
                                 />
                             </Box>
                         )}
@@ -215,6 +216,7 @@ const ChampionshipDetailPage = (props) => {
                             <Box>
                                 <TeamsStanding
                                     teams={teamsWithDrivers}
+                                    admin={isLeagueAdmin}
                                 />
                             </Box>
                         )}
@@ -230,6 +232,7 @@ const ChampionshipDetailPage = (props) => {
                             <Box>
                                 <RacesList
                                     races={races}
+                                    admin={isLeagueAdmin}
                                 />
                             </Box>
                         )}

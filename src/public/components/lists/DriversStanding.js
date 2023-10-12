@@ -4,17 +4,18 @@ import { useState } from "react";
 const DriversStanding = (props) => {
 
     const [drivers, setDrivers] = useState(props.drivers);
+    const [admin, setAdmin] = useState(props.admin);
     const columns = [
         {
             name: "Position",
             align: "left"
         },
         {
-            name: "Address",
+            name: "Nickname",
             align: "left"
         },
         {
-            name: "Nickname",
+            name: "Address",
             align: "left"
         },
         {
@@ -51,20 +52,20 @@ const DriversStanding = (props) => {
                                 <TableCell component="th" scope="row">
                                     {index + 1}
                                 </TableCell>
+
+                                {/* Nickname */}
+                                <TableCell>
+                                    <b>{driver.nickname}</b>
+                                </TableCell>
                                 
                                 {/* Address */}
                                 <TableCell>
                                     {driver.address_driver}
                                 </TableCell>
 
-                                {/* Nickname */}
-                                <TableCell>
-                                    {driver.nickname}
-                                </TableCell>
-
                                 {/* Total Points */}
                                 <TableCell>
-                                    {driver.total_points}
+                                    <b>{driver.total_points}</b>
                                 </TableCell>
 
                             </TableRow>
