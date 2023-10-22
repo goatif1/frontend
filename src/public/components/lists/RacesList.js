@@ -3,6 +3,7 @@ import { useEffect, useState } from "react"
 import RaceResultsDialog from "../dialogs/RaceResultsDialog";
 import RouletteIcon from "../../../images/roulette.png";
 import RouletteDialog from "../dialogs/RouletteDialog";
+import CreateRouletteDialog from "../dialogs/CreateRouletteDialog";
 
 const RacesList = (props) => {
 
@@ -160,8 +161,20 @@ const RacesList = (props) => {
                 />
             )}
 
-            {seeRoulette && selectedRace && (
+            {/* {seeRoulette && selectedRace && (
                 <RouletteDialog
+                    race={selectedRace}
+                    admin={admin}
+                    open={seeRoulette && selectedRace}
+                    onClose={() => {
+                        setSelectedRace(null);
+                        setSeeRoulette(false);
+                    }}
+                />
+            )} */}
+
+            {seeRoulette && selectedRace && !selectedRace.roulette && (
+                <CreateRouletteDialog
                     race={selectedRace}
                     admin={admin}
                     open={seeRoulette && selectedRace}

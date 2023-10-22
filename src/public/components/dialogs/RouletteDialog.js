@@ -15,6 +15,7 @@ const RouletteDialog = (props) => {
 
     const [roulette, setRoulette] = useState(null);
     const [generating, setGenerating] = useState(false);
+    console.log("RACE: ", race);
 
 
     const generate_roulette = async () => {
