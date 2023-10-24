@@ -1,4 +1,4 @@
-import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
+import { Box, Button, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, Grid, MenuItem, Paper, Select, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField, Typography } from "@mui/material";
 import { useRef, useState } from "react";
 import { useSnackbar } from "notistack";
 import { getApiUrl, postData } from "../../../api/commons";
@@ -56,6 +56,33 @@ const CreateRouletteDialog = (props) => {
     }
 
     console.log("Options: ", options);
+
+    const handleClose = () => {
+        setOptions([]);
+        setWheelData([]);
+        props.onClose();
+    }
+
+    const handleCreate = async () => {
+        setGenerating(true);
+
+        let url = getApiUrl() + "/championships/" + params.id_championship + "/races/" + race.id_race + "/roulette";
+        let create_data = {
+            options: options
+        }
+
+        let create_roulette_res = await postData(url, create_data, true, getToken());
+        if (create_roulette_res && create_roulette_res.data && create_roulette_res.data.status && create_roulette_res.data.status == "Success"){
+            enqueueSnackbar("Roulette created successfully.", {variant: "success"});
+            setGenerating(false);
+            // handleClose();
+        } else {
+            setGenerating(false);
+            enqueueSnackbar("Error creating roulette.", {variant: "error"});
+        }
+    }
+
+    let enableCreate = options && options.length >= 2 && !generating;
 
     return (
         <Dialog
@@ -230,6 +257,10 @@ const CreateRouletteDialog = (props) => {
                     )}
                 </Grid>
             </DialogContent>
+            <DialogActions>
+                <Button disabled={generating} onClick={handleClose}>Cancel</Button>
+                <Button disabled={!enableCreate} onClick={handleCreate}>Create Roulette</Button>
+            </DialogActions>
         </Dialog>
     );
 }
