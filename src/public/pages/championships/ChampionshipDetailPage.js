@@ -46,7 +46,9 @@ const ChampionshipDetailPage = (props) => {
         let league_res = await getData(url, false, getToken());
         if (league_res && league_res.data) {
             if (user_is_logged && account){
-                setIsLeagueAdmin(league_res.data.admin == account);
+                console.log("ORGANIZATION ADMIN IS: ", league_res.data.admin);
+                console.log("YOU IS: ", account);
+                setIsLeagueAdmin(league_res.data.admin.toLowerCase() == account.toLowerCase());
             }
             setLeague(league_res.data);
         } else {

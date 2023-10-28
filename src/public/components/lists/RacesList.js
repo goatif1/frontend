@@ -4,6 +4,7 @@ import RaceResultsDialog from "../dialogs/RaceResultsDialog";
 import RouletteIcon from "../../../images/roulette.png";
 import RouletteDialog from "../dialogs/RouletteDialog";
 import CreateRouletteDialog from "../dialogs/CreateRouletteDialog";
+import { enqueueSnackbar } from "notistack";
 
 const RacesList = (props) => {
 
@@ -61,6 +62,7 @@ const RacesList = (props) => {
     }, []);
 
     console.log("PROPS RACES: ", props.races);
+    console.log("PROPS ADMIN: ", admin);
     
     return (
         <TableContainer component={Paper}>
@@ -122,8 +124,14 @@ const RacesList = (props) => {
                                 <TableCell>
                                     <ButtonBase
                                         onClick={() => {
-                                            setSelectedRace(race);
-                                            setSeeRoulette(true);
+                                            if (race && !race.roulette && !admin){
+                                                // Case where race has no roulette and user is not the admin
+                                                // So there's no place to see the roulette yet
+                                                enqueueSnackbar("Roulette has no roulette yet. Wait until Admin generates it.", {variant: "warning"})
+                                            } else {
+                                                setSelectedRace(race);
+                                                setSeeRoulette(true);
+                                            }
                                         }}
                                     >
                                         <Avatar
@@ -161,7 +169,7 @@ const RacesList = (props) => {
                 />
             )}
 
-            {/* {seeRoulette && selectedRace && (
+            {seeRoulette && selectedRace && selectedRace.roulette && (
                 <RouletteDialog
                     race={selectedRace}
                     admin={admin}
@@ -171,7 +179,7 @@ const RacesList = (props) => {
                         setSeeRoulette(false);
                     }}
                 />
-            )} */}
+            )}
 
             {seeRoulette && selectedRace && !selectedRace.roulette && (
                 <CreateRouletteDialog

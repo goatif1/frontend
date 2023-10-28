@@ -1,38 +1,41 @@
 import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle } from "@mui/material";
-import { useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useSnackbar } from "notistack";
 import { getApiUrl, postData } from "../../../api/commons";
 import { useParams } from "react-router-dom";
-import { getToken } from "../../../utils/access";
+import { getAccount, getToken } from "../../../utils/access";
+import { getRouletteOptions } from "../../../web3/web3_service";
 
 const RouletteDialog = (props) => {
 
     const { enqueueSnackbar } = useSnackbar();
-    const params = useParams();
 
     const [race, setRace] = useState(props.race);
     const [admin, setAdmin] = useState(props.admin);
 
-    const [roulette, setRoulette] = useState(null);
-    const [generating, setGenerating] = useState(false);
-    console.log("RACE: ", race);
+    const [rouletteOptions, setRouletteOptions] = useState(null);
+    const [betting, setBetting] = useState(false);
 
+    const { Web3 } = require('web3');
 
-    const generate_roulette = async () => {
-        console.log("RACE: ", race);
-        try {
-            let url = getApiUrl() + "/championships/" + params.id_championship + "/races/" + race.id_race + "/roulette";
-            let created = await postData(url, {}, true, getToken());
-            if (created){
-                // todo, get the data from the roulette
-                setGenerating(false);
-            }
-        } catch (e) {
-            console.log("Error roulette create: ", e);
-            setGenerating(false);
-            enqueueSnackbar("Error generating new roulette.");
-        }
+    const handleClose = () => {
+        setRace(null);
+        setRouletteOptions(null);
     }
+
+    const getRoulette = async () => {
+        try {
+            getRouletteOptions(race.roulette);
+        } catch (e) {
+            enqueueSnackbar("Error getting the Roulette values", {variant: "error"});
+        }
+
+        console.log("ACCOUNT IN CONTEXT IS: ", getAccount());
+    }
+
+    useEffect(() => {
+        getRoulette();
+    }, [])
 
     return (
         <Dialog
@@ -45,38 +48,7 @@ const RouletteDialog = (props) => {
                 {`${race.name} - Roulette`}
             </DialogTitle>
             <DialogContent>
-                {race && race.roulette == null && !generating && (
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="start"
-                        alignItems="center"
-                    >
-                        {"This race has no roulette yet."}
-                        <Button
-                            sx={{mt: 2}}
-                            onClick={() => {
-                                setGenerating(true);
-                                generate_roulette();
-                            }}
-                            variant="outlined"
-                        >
-                            {"Generate Roulette"}
-                        </Button>
-                    </Box>
-                )}
-
-                {race && race.roulette == null && generating && (
-                    <Box
-                        display="flex"
-                        flexDirection="column"
-                        justifyContent="start"
-                        alignItems="center"
-                    >
-                        {"Generating roulette."}
-                        <CircularProgress/>
-                    </Box>
-                )}
+                
             </DialogContent>
         </Dialog>
     );
