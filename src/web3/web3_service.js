@@ -5,6 +5,7 @@ const web3 = new Web3(new Web3.providers.HttpProvider(WEB3_CONSTANTS.PROVIDER_UR
 web3.eth.Contract.handleRevert = true;
 
 const roulettes_abi = require("./abi/RoulettesContractAbi.json");
+
 const { getAccount } = require('../utils/access');
 const RoulettesContract = new web3.eth.Contract(roulettes_abi, WEB3_CONSTANTS.ROULETTES_CONTRACT_ADDRESS);
 
@@ -20,6 +21,35 @@ const getRouletteOptions = async (roulette_id) => {
     }
 }
 
+const increaseOptionWeight = async (roulette_id, option_id, weight_increment) => {
+    try {
+        let account = getAccount();
+        const ether_amount = weight_increment * 0.01;
+        console.log("ETHER AMOUNT: ", ether_amount);
+        const wei_amount = web3.utils.toWei(ether_amount, 'ether');
+        console.log("WEI AMOUNT: ", wei_amount);
+        console.log("CONTRACT METHODS: ", RoulettesContract.methods);
+
+        let estimated_gas = await RoulettesContract.methods.betRouletteOption(roulette_id, option_id, weight_increment).estimateGas();
+        console.log("Estimated gas is: ", estimated_gas);
+
+        const increased = await RoulettesContract.methods.betRouletteOption(roulette_id, option_id, weight_increment).send({
+            from: account,
+            value: wei_amount,
+            gas: 2000000,
+            gasPrice: 10000000000,
+        });
+        return increased;
+
+        // 99.9695
+
+    } catch (e) {
+        console.log("EXCEPTION INCREASE: ", e);
+        throw Error("Error increasing option weight.")
+    }
+}
+
 module.exports = {
-    getRouletteOptions
+    getRouletteOptions,
+    increaseOptionWeight
 }

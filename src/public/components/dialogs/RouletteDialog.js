@@ -6,6 +6,7 @@ import { useParams } from "react-router-dom";
 import { getAccount, getToken } from "../../../utils/access";
 import { getRouletteOptions } from "../../../web3/web3_service";
 import { Wheel } from 'react-custom-roulette'
+import BetOptionDialog from "./BetOptionDialog";
 
 const RouletteDialog = (props) => {
 
@@ -90,6 +91,10 @@ const RouletteDialog = (props) => {
             });
             setWheelData(wheelData);
 
+            // Secure other variables
+            setBetting(false);
+            setSelectedOption(null);
+
         } catch (e) {
             enqueueSnackbar("Error getting the Roulette values", {variant: "error"});
         }
@@ -171,7 +176,7 @@ const RouletteDialog = (props) => {
                         <Grid item sm={12} sx={{mt: 4}}>
                             <Box display="flex" flexDirection="row" justifyContent="center">
                                 <Wheel
-                                    mustStartSpinning={spin}
+                                    mustStartSpinning={spinning}
                                     prizeNumber={0}
                                     data={wheelData}
                                     backgroundColors={colors}
@@ -200,6 +205,24 @@ const RouletteDialog = (props) => {
                     )}
                 </Grid>
             </DialogContent>
+
+            {betting && selectedOption && (
+                <BetOptionDialog
+                    open={betting && selectedOption}
+                    onClose={() => {
+                        setBetting(false);
+                        setSelectedOption(null);
+                    }}
+                    onBet={() => {
+                        setBetting(false);
+                        setSelectedOption(false);
+                        getRoulette();
+                    }}
+                    race={race}
+                    option={selectedOption}
+
+                />
+            )}
         </Dialog>
     );
 }
