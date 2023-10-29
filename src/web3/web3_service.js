@@ -11,12 +11,8 @@ const RoulettesContract = new web3.eth.Contract(roulettes_abi, WEB3_CONSTANTS.RO
 const getRouletteOptions = async (roulette_id) => {
     try {
         let account = getAccount();
-        console.log("USER ACCOUNT: ", account)
-        const receipt = await RoulettesContract.methods.getRouletteOptions(roulette_id).send({
-            from: account
-        });
-
-        console.log("RECEIPT IS: ", receipt);
+        const options = await RoulettesContract.methods.getRouletteOptions(roulette_id).call({from: account});
+        return options;
 
     } catch (e) {
         console.log("EXCEPTION IN SC SEND: ", e);
