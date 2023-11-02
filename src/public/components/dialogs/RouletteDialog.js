@@ -4,7 +4,7 @@ import { useSnackbar } from "notistack";
 import { getApiUrl, getData, postData } from "../../../api/commons";
 import { useParams } from "react-router-dom";
 import { getAccount, getToken } from "../../../utils/access";
-import { getRouletteOptions } from "../../../web3/web3_service";
+import { getRouletteOptions, getRouletteResult, spinRoulette } from "../../../web3/web3_service";
 import { Wheel } from 'react-custom-roulette'
 import BetOptionDialog from "./BetOptionDialog";
 
@@ -23,6 +23,10 @@ const RouletteDialog = (props) => {
     const [betting, setBetting] = useState(false);
     const [selectedOption, setSelectedOption] = useState(null);
     
+    const [spinned, setSpinned] = useState(true);
+    const [spinnedResult, setSpinnedResult] = useState(0);
+    const [showResult, setShowResult] = useState(false);
+
     const [spinning, setSpinning] = useState(false);
 
     const colors = [
@@ -56,6 +60,15 @@ const RouletteDialog = (props) => {
 
     const getRoulette = async () => {
         try {
+            // Get the roulette result
+            let constract_result_res = await getRouletteResult(race.roulette);
+            let roulette_spinned = constract_result_res[0];
+            console.log("roulette spinned: ", roulette_spinned);
+            setSpinned(roulette_spinned);
+            let roulette_spinned_option = parseInt((constract_result_res[1]).toString().replace("n", ""));
+            console.log("roulette spinned result: ", roulette_spinned_option);
+            setSpinnedResult(roulette_spinned_option);
+
             // Get options from the smart contract
             let contract_options_res = await getRouletteOptions(race.roulette);
             let contract_options = [];
@@ -102,7 +115,17 @@ const RouletteDialog = (props) => {
 
     const spin = async () => {
         try {
-            let url = getApiUrl() + "/championships/" + race.id_championship + "/races/" + race.id + "/roulette/spin";
+            let spin_result = await spinRoulette(race.roulette);
+            console.log("SPIN RESULT IS: ", spin_result);
+            spin_result = parseInt(spin_result.toString().replace("n", ""))
+
+            if (spin_result && spin_result > 0){
+                setSpinnedResult(spin_result);
+                setSpinned(true);
+                setShowResult(true);
+                // TODO: timer
+                setSpinning(false);
+            }
 
         } catch (e) {
             setSpinning(false);
@@ -158,6 +181,7 @@ const RouletteDialog = (props) => {
                                                                 }}
                                                                 variant="contained"
                                                                 size="small"
+                                                                disabled={spinned}
                                                             >
                                                                 Increase
                                                             </Button>
@@ -177,7 +201,7 @@ const RouletteDialog = (props) => {
                             <Box display="flex" flexDirection="row" justifyContent="center">
                                 <Wheel
                                     mustStartSpinning={spinning}
-                                    prizeNumber={0}
+                                    prizeNumber={spinnedResult}
                                     data={wheelData}
                                     backgroundColors={colors}
                                     textColors={['#ffffff']}
@@ -197,6 +221,7 @@ const RouletteDialog = (props) => {
                                     }}
                                     variant="contained"
                                     size="medium"
+                                    disabled={spinned}
                                 >
                                     {`🎰 Spin 🎰`}
                                 </Button>
