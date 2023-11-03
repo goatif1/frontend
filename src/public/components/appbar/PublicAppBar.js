@@ -43,6 +43,8 @@ const PublicAppBar = (props) => {
                 const url_nonce = getApiUrl() + `/users/${account}/nonce`;
                 let nonce_response = await getData(url_nonce);
 
+                console.log("NONCE RESPONSE: ", nonce_response);
+
                 let nonce = nonce_response.data.data;
                 if (!nonce){
                     enqueueSnackbar("Login error", {variant: 'error'});

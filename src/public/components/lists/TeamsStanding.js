@@ -45,7 +45,7 @@ const TeamsStanding = (props) => {
                     <TableRow>
                         {columns.map((column) => {
                             return (
-                                <TableCell align={column.align}>
+                                <TableCell align={column.align ?? "center"}>
                                     {column.name}
                                 </TableCell>
                             );
@@ -55,7 +55,7 @@ const TeamsStanding = (props) => {
 
                 {/* DRIVERS */}
                 <TableBody>
-                    {teams.map((team, index) => {
+                    {teams && teams.length > 0 && teams.map((team, index) => {
                         console.log("TEAM: ", team);
                         return (
                             <TableRow
@@ -68,32 +68,32 @@ const TeamsStanding = (props) => {
                                 </TableCell>
                                 
                                 {/* Name */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     <b>{team.name}</b>
                                 </TableCell>
 
                                 {/* Total Points */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     <b>{team.total_points}</b>
                                 </TableCell>
 
                                 {/* Driver 1 */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     {team.nickname_driver_1 ?? ""}
                                 </TableCell>
 
                                 {/* Driver 1 Points */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     {team.points_driver_1 ?? 0}
                                 </TableCell>
 
                                 {/* Driver 2 */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     {team.nickname_driver_2 ?? ""}
                                 </TableCell>
 
                                 {/* Driver 2 Points */}
-                                <TableCell align={columns[index].align}>
+                                <TableCell>
                                     {team.points_driver_2 ?? 0}
                                 </TableCell>
 

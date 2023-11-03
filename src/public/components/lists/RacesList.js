@@ -5,8 +5,12 @@ import RouletteIcon from "../../../images/roulette.png";
 import RouletteDialog from "../dialogs/RouletteDialog";
 import CreateRouletteDialog from "../dialogs/CreateRouletteDialog";
 import { enqueueSnackbar } from "notistack";
+import { useParams } from "react-router-dom";
+import { getApiUrl, getData } from "../../../api/commons";
+import { getToken } from "../../../utils/access";
 
 const RacesList = (props) => {
+    const params = useParams();
 
     const [admin, setAdmin] = useState(props.admin);
     const [races, setRaces] = useState();
@@ -61,8 +65,29 @@ const RacesList = (props) => {
         setRaces(ordered_races);
     }, []);
 
-    console.log("PROPS RACES: ", props.races);
-    console.log("PROPS ADMIN: ", admin);
+    const getChampionshipRaces = async () => {
+        let url = getApiUrl() + "/championships/" + params.id_championship + "/races";
+        let races_res = await getData(url, false, getToken());
+        if (races_res && races_res.data){
+            let new_races = races_res.data;
+
+            let ordered_races = new_races.sort((race_a, race_b) => {
+                if (race_a.race_datetime_utc == race_b.race_datetime_utc){
+                    return race_a.id_race - race_b.id_race;
+                }
+                return race_a.race_datetime_utc - race_b.datetime_utc;
+            });
+            for (const race of ordered_races){
+                let date = new Date(race.race_datetime_utc);
+                let localeDate =  date.toLocaleString('en-GB', {timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone, day: "2-digit", month: "2-digit", year:"numeric", hour: "2-digit", minute: "2-digit", minute: "2-digit"});
+                console.log("RACE DATE: ", localeDate);
+                race.race_datetime_lt = localeDate;
+            }
+            setRaces(ordered_races);
+        } else {
+            enqueueSnackbar("Error getting championship races.", {variant: "error"});
+        }
+    }
     
     return (
         <TableContainer component={Paper}>
@@ -189,6 +214,7 @@ const RacesList = (props) => {
                     onClose={() => {
                         setSelectedRace(null);
                         setSeeRoulette(false);
+                        getChampionshipRaces();
                     }}
                 />
             )}

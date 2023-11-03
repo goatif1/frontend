@@ -63,7 +63,9 @@ const RouletteDialog = (props) => {
             // Get the roulette result
             let constract_result_res = await getRouletteResult(race.roulette);
             let roulette_spinned = constract_result_res[0];
+
             console.log("roulette spinned: ", roulette_spinned);
+
             setSpinned(roulette_spinned);
             let roulette_spinned_option = parseInt((constract_result_res[1]).toString().replace("n", ""));
             console.log("roulette spinned result: ", roulette_spinned_option);
@@ -95,6 +97,7 @@ const RouletteDialog = (props) => {
             let wheelData = [];
             backend_options.map((option) => {
                 wheelData.push({
+                    option_id: option.option_id,
                     option: option.option_name,
                     optionSize: option.weight,
                     style: {
@@ -109,6 +112,7 @@ const RouletteDialog = (props) => {
             setSelectedOption(null);
 
         } catch (e) {
+            console.log("Exception get roulette: ", e);
             enqueueSnackbar("Error getting the Roulette values", {variant: "error"});
         }
     }
@@ -116,11 +120,19 @@ const RouletteDialog = (props) => {
     const spin = async () => {
         try {
             let spin_result = await spinRoulette(race.roulette);
+            spin_result = parseInt(spin_result.toString().replace("n", ""));
+
+            let winner_index = -1;
+            wheelData.map((option, i) => {
+                if (option.option_id == spin_result) winner_index = i;
+            });
             console.log("SPIN RESULT IS: ", spin_result);
-            spin_result = parseInt(spin_result.toString().replace("n", ""))
+            console.log("Wheel data is: ", wheelData);
+            console.log("roulette options is: ", rouletteOptions);
+
 
             if (spin_result && spin_result > 0){
-                setSpinnedResult(spin_result);
+                setSpinnedResult(winner_index);
                 setSpinned(true);
                 setShowResult(true);
                 // TODO: timer
