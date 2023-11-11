@@ -1,14 +1,8 @@
 import { Box, Button, CircularProgress, Dialog, DialogContent, DialogTitle, Grid, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow, TextField } from "@mui/material";
-import { useContext, useEffect, useState } from "react";
+import { useState } from "react";
 import { useSnackbar } from "notistack";
-import { getApiUrl, getData, postData } from "../../../api/commons";
-import { useParams } from "react-router-dom";
-import { getAccount, getToken } from "../../../utils/access";
-import { getRouletteOptions, increaseOptionWeight } from "../../../web3/web3_service";
-import { Wheel } from 'react-custom-roulette'
 
 const BetOptionDialog = (props) => {
-    const { Web3 } = require('web3');
     const { enqueueSnackbar } = useSnackbar();
 
     const [race, setRace] = useState(props.race);
@@ -19,19 +13,7 @@ const BetOptionDialog = (props) => {
     const [value, setValue] = useState("");
 
     const bet = async () => {
-        let increased = await increaseOptionWeight(race.roulette, option.option_id, parseInt(value));
-        console.log("INCREASED: ");
-        if (increased){
-            enqueueSnackbar("Weight increased successfully.", {variant: "success"});
-            
-            setWaiting(false);
-            setValue("");
-
-            props.onBet();
-        } else {
-            enqueueSnackbar("An error occurred on weighti increase.", {variant: "error"});
-            setWaiting(false);
-        }
+        //  TODO: increase an option weight in backend
     }
 
 

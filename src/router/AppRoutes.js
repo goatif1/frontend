@@ -5,6 +5,8 @@ import { hasToken } from '../utils/access';
 import LeaguesPage from '../public/pages/leagues/LeaguesPage';
 import LeagueDetailPage from '../public/pages/leagues/LeagueDetailPage';
 import ChampionshipDetailPage from '../public/pages/championships/ChampionshipDetailPage';
+import LoginPage from '../public/pages/home/LoginPage';
+import RegisterPage from '../public/pages/home/RegisterPage';
 
 const AppRoutes = (props) => {
     const can_access = (path) => {
@@ -15,6 +17,8 @@ const AppRoutes = (props) => {
         <BrowserRouter>
             <Routes>
                 <Route exact path="/" element={<PublicHomePage/>}/>
+                <Route path="/login" element={<LoginPage/>}/>
+                <Route path="/register" element={<RegisterPage/>}/>
                 <Route path="/home" element= { 
                     can_access("/home") ? <HomePage/> : <Navigate to={{ pathname: "/"}} />
                 }/>

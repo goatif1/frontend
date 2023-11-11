@@ -4,13 +4,11 @@ import { useSnackbar } from "notistack";
 import { getApiUrl, getData, postData } from "../../../api/commons";
 import { useParams } from "react-router-dom";
 import { getAccount, getToken } from "../../../utils/access";
-import { getRouletteOptions, getRouletteResult, spinRoulette } from "../../../web3/web3_service";
 import { Wheel } from 'react-custom-roulette'
 import BetOptionDialog from "./BetOptionDialog";
 
 const RouletteDialog = (props) => {
 
-    const { Web3 } = require('web3');
     const { enqueueSnackbar } = useSnackbar();
 
     const [race, setRace] = useState(props.race);
@@ -61,7 +59,8 @@ const RouletteDialog = (props) => {
     const getRoulette = async () => {
         try {
             // Get the roulette result
-            let constract_result_res = await getRouletteResult(race.roulette);
+            let constract_result_res = []; // todo: get the roulette result
+            // let constract_result_res = await getRouletteResult(race.roulette);
             let roulette_spinned = constract_result_res[0];
 
             console.log("roulette spinned: ", roulette_spinned);
@@ -72,7 +71,8 @@ const RouletteDialog = (props) => {
             setSpinnedResult(roulette_spinned_option);
 
             // Get options from the smart contract
-            let contract_options_res = await getRouletteOptions(race.roulette);
+            let contract_options_res = []; // TODO: GET THE RULETTE OPTIONS FROM THE BACKEND
+            // let contract_options_res = await getRouletteOptions(race.roulette);
             let contract_options = [];
             let new_total_weight = 0;
             contract_options_res.map((c_option) => {
@@ -119,7 +119,8 @@ const RouletteDialog = (props) => {
 
     const spin = async () => {
         try {
-            let spin_result = await spinRoulette(race.roulette);
+            let spin_result = 0; // RODO: get the spin result from backend
+            // let spin_result = await spinRoulette(race.roulette);
             spin_result = parseInt(spin_result.toString().replace("n", ""));
 
             let winner_index = -1;
