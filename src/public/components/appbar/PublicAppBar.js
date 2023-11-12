@@ -83,6 +83,10 @@ const PublicAppBar = (props) => {
         navigate("/login");
     }
 
+    const register = () => {
+        navigate("/register");
+    }
+
     const stringToHex = (str) => {
         const encoder = new TextEncoder();
         const data = encoder.encode(str);
@@ -146,15 +150,16 @@ const PublicAppBar = (props) => {
                     </Box>
 
                     {/* REGISTER BUTTON */}
-                    {/* <Box sx={{ marginLeft: '10px' }}>
+                    <Box sx={{ marginLeft: '10px' }}>
                         <AppBarAccountButton
                             textColor="white"
                             onClick={() => {
                                 console.log("REGISTER CLICKED!")
+                                register();
                             }}
                             text="Register"
                         />
-                    </Box> */}
+                    </Box>
                 </Box>
 
             </Toolbar>
