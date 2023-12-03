@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import { Button, TextField, Container, CssBaseline, Typography, Box } from '@mui/material';
 import { Link } from 'react-router-dom';
-import { getApiUrl, getData } from '../../../api/commons';
+import { getApiUrl, getData, postData } from '../../../api/commons';
 import { getToken } from '../../../utils/access';
 
 const RegisterPage = () => {
@@ -36,12 +36,28 @@ const RegisterPage = () => {
         }
     }
 
-    const handleRegister = () => {
+    const handleRegister = async () => {
         // Handle registration logic
         console.log('Email: ', email);
         console.log('nickname: ', nickname);
         console.log('password: ', password);
         console.log('repeatPassword: ', repeatPassword);
+        let url = getApiUrl() + "/auth/register";
+        let data = {
+            email: email,
+            nickname: nickname,
+            password: password
+        };
+
+        try {
+            let register_res = await postData(url, data, false, null);
+            if (register_res && register_res.data && register_res.data.status && register_res.data.status == "Success"){
+                // TODO: Go to home page
+            }
+        } catch (e) {
+            console.log("Exception on register: ", e);
+        }
+
     };
 
     let email_correct = email_regex.test(email) && !Boolean(emailError);

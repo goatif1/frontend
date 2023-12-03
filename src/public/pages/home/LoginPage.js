@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 const LoginPage = () => {
   const handleLogin = () => {
     // Handle login logic
+    
     console.log('Login clicked');
   };
 
